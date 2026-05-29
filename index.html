@@ -1,638 +1,469 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>CollegePilot — Admissions Counselling</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>CollegePilot – Your Admission Guide</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
 <style>
-*{margin:0;padding:0;box-sizing:border-box}
-:root{
-  --navy:#0B2545;--blue:#1B4F8A;--mid:#2D72C8;--accent:#3E90F0;
-  --light:#E8F1FB;--lighter:#F4F8FE;--text:#0B1E33;--muted:#5A7A99;
-  --border:#C8DCEF;--white:#fff;--success:#1A7A4A;--successbg:#E6F5ED;
-  --danger:#C0392B;--dangerbg:#FADBD8;
-}
-body{font-family:'DM Sans',sans-serif;background:var(--lighter);color:var(--text);min-height:100vh}
+  *{box-sizing:border-box;margin:0;padding:0}
+  :root{
+    --navy:#0a1628;--navy2:#112240;--gold:#f0b429;--gold2:#ffd166;
+    --sky:#4fc3f7;--mint:#00e5c3;--white:#f8fafc;--muted:#8899a6;
+    --card:#182d4a;--border:#1e3a5f;
+  }
+  body{font-family:'DM Sans',sans-serif;background:var(--navy);color:var(--white);min-height:100vh;overflow-x:hidden}
+  h1,h2,h3,.logo{font-family:'Syne',sans-serif}
 
-/* NAV */
-nav{background:var(--navy);padding:0 2rem;height:64px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;box-shadow:0 2px 12px rgba(11,37,69,0.2)}
-.logo{font-family:'Playfair Display',serif;font-size:1.5rem;color:#fff;display:flex;align-items:center;gap:10px;text-decoration:none}
-.logo-icon{width:34px;height:34px;background:var(--accent);border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:16px;color:#fff}
-.nav-badge{font-size:11px;background:rgba(62,144,240,0.22);color:#9CC5F5;padding:4px 12px;border-radius:20px;border:1px solid rgba(62,144,240,0.3)}
-.nav-user{display:none;align-items:center;gap:9px}
-.nav-user.show{display:flex}
-.user-dot{width:32px;height:32px;background:var(--accent);border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:600;font-size:13px;color:#fff}
+  /* NAV */
+  nav{display:flex;align-items:center;justify-content:space-between;padding:1.2rem 2.5rem;border-bottom:1px solid var(--border);background:rgba(10,22,40,0.95);position:sticky;top:0;z-index:100;backdrop-filter:blur(10px)}
+  .logo{font-size:1.6rem;font-weight:800;letter-spacing:-0.03em}
+  .logo span{color:var(--gold)}
+  .nav-tag{font-size:0.75rem;color:var(--muted);letter-spacing:0.05em;text-transform:uppercase}
 
-/* HERO */
-.hero{background:var(--navy);padding:3.5rem 2rem 4rem;text-align:center;position:relative;overflow:hidden}
-.hero::before{content:'';position:absolute;top:-80px;right:-100px;width:350px;height:350px;border-radius:50%;background:rgba(62,144,240,0.07);pointer-events:none}
-.hero::after{content:'';position:absolute;bottom:-80px;left:-80px;width:280px;height:280px;border-radius:50%;background:rgba(62,144,240,0.06);pointer-events:none}
-.hero h1{font-family:'Playfair Display',serif;font-size:2.3rem;color:#fff;line-height:1.22;margin-bottom:0.75rem}
-.hero h1 span{color:#7BB8F5}
-.hero p{color:#A8C8EE;font-size:1rem;font-weight:300;max-width:480px;margin:0 auto 1.75rem;line-height:1.6}
-.hero-pills{display:flex;justify-content:center;gap:8px;flex-wrap:wrap}
-.hero-pill{background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.18);color:#C5DEFF;font-size:12px;padding:5px 14px;border-radius:20px}
+  /* HERO */
+  .hero{text-align:center;padding:5rem 2rem 3rem;position:relative}
+  .hero h1{font-size:clamp(2.2rem,5vw,3.8rem);font-weight:800;line-height:1.1;letter-spacing:-0.03em;max-width:700px;margin:0 auto 1rem}
+  .hero h1 em{font-style:normal;color:var(--gold)}
+  .hero p{color:var(--muted);font-size:1.1rem;max-width:500px;margin:0 auto 2.5rem;line-height:1.7}
+  .hero-dots{display:flex;gap:0.5rem;justify-content:center;margin-bottom:1rem}
+  .dot{width:8px;height:8px;border-radius:50%;background:var(--border)}
+  .dot.active{background:var(--gold)}
 
-/* SCREENS */
-.screen{display:none;max-width:660px;margin:0 auto;padding:2rem 1rem 5rem}
-.screen.active{display:block}
+  /* SCREEN WRAPPER */
+  .screen{display:none;max-width:520px;margin:0 auto;padding:0 1.5rem 4rem}
+  .screen.active{display:block}
 
-/* STEPS */
-.steps{display:flex;margin-bottom:1.8rem}
-.step{flex:1;text-align:center;position:relative}
-.step::after{content:'';position:absolute;top:14px;left:50%;right:-50%;height:2px;background:var(--border);z-index:0}
-.step:last-child::after{display:none}
-.step-dot{width:28px;height:28px;border-radius:50%;border:2px solid var(--border);background:#fff;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;color:var(--muted);margin:0 auto 5px;position:relative;z-index:1;transition:all 0.3s}
-.step-dot.active{border-color:var(--mid);background:var(--mid);color:#fff}
-.step-dot.done{border-color:var(--success);background:var(--success);color:#fff}
-.step-label{font-size:11px;color:var(--muted)}
-.step.active .step-label{color:var(--mid);font-weight:500}
+  /* CARD */
+  .card{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:2rem;margin-bottom:1.2rem}
+  .card-title{font-family:'Syne',sans-serif;font-size:1.2rem;font-weight:700;margin-bottom:0.3rem}
+  .card-sub{color:var(--muted);font-size:0.88rem;margin-bottom:1.5rem}
 
-/* CARDS */
-.card{background:var(--white);border-radius:16px;border:1px solid var(--border);padding:1.85rem;margin-bottom:1.25rem;box-shadow:0 2px 14px rgba(27,79,138,0.06)}
-.card-title{font-family:'Playfair Display',serif;font-size:1.25rem;color:var(--navy);margin-bottom:0.35rem}
-.card-sub{font-size:13px;color:var(--muted);margin-bottom:1.5rem}
+  /* FORM */
+  label{display:block;font-size:0.82rem;color:var(--muted);margin-bottom:0.4rem;letter-spacing:0.04em;text-transform:uppercase}
+  input[type=text],input[type=tel]{width:100%;background:rgba(255,255,255,0.05);border:1px solid var(--border);border-radius:10px;padding:0.85rem 1rem;color:var(--white);font-size:1rem;font-family:'DM Sans',sans-serif;outline:none;transition:border-color 0.2s}
+  input:focus{border-color:var(--gold)}
+  input::placeholder{color:var(--muted)}
 
-/* FORM */
-label{font-size:13px;font-weight:500;color:var(--navy);display:block;margin-bottom:6px}
-input[type=text],input[type=tel]{width:100%;padding:11px 14px;border:1.5px solid var(--border);border-radius:10px;font-family:'DM Sans',sans-serif;font-size:14.5px;color:var(--text);background:var(--lighter);outline:none;transition:border 0.2s,box-shadow 0.2s}
-input[type=text]:focus,input[type=tel]:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(62,144,240,0.1);background:#fff}
-textarea{width:100%;padding:11px 14px;border:1.5px solid var(--border);border-radius:10px;font-family:'DM Sans',sans-serif;font-size:14px;color:var(--text);background:var(--lighter);resize:vertical;min-height:90px;outline:none;transition:border 0.2s}
-textarea:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(62,144,240,0.1);background:#fff}
-.field{margin-bottom:1.2rem}
-.phone-wrap{display:flex;gap:8px}
-.phone-code{padding:11px 13px;border:1.5px solid var(--border);border-radius:10px;background:var(--lighter);font-size:14px;color:var(--muted);white-space:nowrap;user-select:none}
+  /* PHONE ROW */
+  .phone-row{display:flex;gap:10px}
+  .flag-box{background:rgba(255,255,255,0.05);border:1px solid var(--border);border-radius:10px;padding:0.85rem 1rem;font-size:0.95rem;white-space:nowrap;color:var(--muted)}
 
-/* BUTTONS */
-.btn-primary{width:100%;padding:13px;background:var(--blue);color:#fff;border:none;border-radius:10px;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:600;cursor:pointer;transition:background 0.2s,transform 0.15s;letter-spacing:0.3px}
-.btn-primary:hover{background:var(--mid);transform:translateY(-1px)}
-.btn-primary:active{transform:translateY(0)}
-.btn-primary:disabled{background:#8BAAC8;cursor:not-allowed;transform:none}
-.btn-outline{padding:11px 20px;background:transparent;color:var(--blue);border:1.5px solid var(--border);border-radius:10px;font-family:'DM Sans',sans-serif;font-size:13.5px;font-weight:500;cursor:pointer;transition:all 0.2s}
-.btn-outline:hover{border-color:var(--accent);color:var(--accent);background:var(--light)}
-.btn-ghost{background:none;border:none;color:var(--muted);font-size:13px;cursor:pointer;font-family:'DM Sans',sans-serif;padding:0;display:flex;align-items:center;gap:6px}
-.btn-ghost:hover{color:var(--blue)}
+  /* BUTTONS */
+  .btn{width:100%;padding:0.95rem;border-radius:12px;font-family:'Syne',sans-serif;font-size:1rem;font-weight:700;cursor:pointer;border:none;transition:all 0.2s;letter-spacing:0.01em}
+  .btn-primary{background:var(--gold);color:var(--navy);margin-top:1.5rem}
+  .btn-primary:hover{background:var(--gold2);transform:translateY(-1px)}
+  .btn-primary:active{transform:translateY(0)}
+  .btn-outline{background:transparent;color:var(--white);border:1px solid var(--border);margin-top:0.8rem}
+  .btn-outline:hover{border-color:var(--gold);color:var(--gold)}
 
-/* OTP */
-.otp-wrap{display:flex;gap:10px;justify-content:center;margin:1rem 0}
-.otp-box{width:52px;height:56px;border:1.5px solid var(--border);border-radius:10px;text-align:center;font-size:1.5rem;font-weight:600;font-family:'DM Sans',sans-serif;background:var(--lighter);color:var(--navy);outline:none;transition:border 0.2s,box-shadow 0.2s}
-.otp-box:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(62,144,240,0.1);background:#fff}
-.timer-wrap{text-align:center;margin-top:10px;font-size:12.5px;color:var(--muted)}
-.resend-btn{background:none;border:none;color:var(--accent);cursor:pointer;font-family:'DM Sans',sans-serif;font-size:12.5px;text-decoration:underline;display:none}
-.resend-btn:disabled{color:var(--muted);cursor:default;text-decoration:none}
+  /* OPTION CARDS */
+  .option-grid{display:grid;gap:0.8rem;margin-top:0.5rem}
+  .option-card{background:rgba(255,255,255,0.03);border:1.5px solid var(--border);border-radius:14px;padding:1.1rem 1.3rem;cursor:pointer;transition:all 0.2s;display:flex;align-items:center;gap:1rem;text-align:left}
+  .option-card:hover{border-color:var(--gold);background:rgba(240,180,41,0.06);transform:translateX(4px)}
+  .option-card.selected{border-color:var(--gold);background:rgba(240,180,41,0.1)}
+  .option-icon{width:44px;height:44px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.3rem;flex-shrink:0}
+  .ic-jee{background:rgba(79,195,247,0.15);color:var(--sky)}
+  .ic-neet{background:rgba(0,229,195,0.15);color:var(--mint)}
+  .ic-cet{background:rgba(240,180,41,0.15);color:var(--gold)}
+  .ic-all{background:rgba(255,100,130,0.15);color:#ff6482}
+  .ic-cn{background:rgba(130,100,255,0.15);color:#a78bfa}
+  .ic-cj{background:rgba(100,200,255,0.15);color:#60c8ff}
+  .option-label{font-family:'Syne',sans-serif;font-size:0.97rem;font-weight:600}
+  .option-desc{font-size:0.78rem;color:var(--muted);margin-top:0.15rem}
+  .option-check{margin-left:auto;width:22px;height:22px;border-radius:50%;border:1.5px solid var(--border);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all 0.2s}
+  .option-card.selected .option-check{background:var(--gold);border-color:var(--gold);color:var(--navy)}
 
-/* COUNSELLING OPTIONS */
-.options-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:1.5rem}
-.option-card{background:var(--lighter);border:2px solid var(--border);border-radius:14px;padding:1rem 1.1rem;cursor:pointer;transition:all 0.22s;position:relative}
-.option-card:hover{border-color:var(--accent);background:var(--light);transform:translateY(-2px);box-shadow:0 6px 18px rgba(27,79,138,0.09)}
-.option-card.selected{border-color:var(--mid);background:#EBF4FF;box-shadow:0 0 0 3px rgba(45,114,200,0.1)}
-.option-check{position:absolute;top:10px;right:10px;width:20px;height:20px;border-radius:50%;background:var(--mid);display:none;align-items:center;justify-content:center;color:#fff;font-size:10px}
-.option-card.selected .option-check{display:flex}
-.option-icon{font-size:20px;margin-bottom:7px}
-.option-label{font-weight:600;font-size:14px;color:var(--navy);margin-bottom:3px}
-.option-desc{font-size:12px;color:var(--muted)}
-.exam-badges{display:flex;flex-wrap:wrap;gap:5px;margin-top:8px}
-.badge{font-size:10.5px;font-weight:600;padding:3px 8px;border-radius:5px;letter-spacing:0.4px}
-.badge-jee{background:#EDF3FF;color:#1B4F8A}
-.badge-neet{background:#E8F5F0;color:#0A6B42}
-.badge-cet{background:#FEF4E8;color:#8B4A00}
+  /* CONFIRMATION */
+  .confirm-badge{text-align:center;padding:2rem 0 1rem}
+  .confirm-icon{width:64px;height:64px;border-radius:50%;background:rgba(0,229,195,0.15);border:2px solid var(--mint);display:flex;align-items:center;justify-content:center;font-size:1.8rem;margin:0 auto 1rem}
+  .confirm-name{font-family:'Syne',sans-serif;font-size:1.4rem;font-weight:700}
+  .confirm-sub{color:var(--muted);font-size:0.88rem;margin-top:0.3rem}
+  .info-row{display:flex;justify-content:space-between;align-items:center;padding:0.7rem 0;border-bottom:1px solid var(--border)}
+  .info-row:last-child{border-bottom:none}
+  .info-label{color:var(--muted);font-size:0.82rem;text-transform:uppercase;letter-spacing:0.05em}
+  .info-value{font-size:0.95rem;font-weight:500;color:var(--white)}
+  .selected-tag{background:rgba(240,180,41,0.15);color:var(--gold);border:1px solid rgba(240,180,41,0.3);border-radius:8px;padding:0.2rem 0.6rem;font-size:0.8rem;font-weight:600}
 
-/* STATUS MESSAGES */
-.status-msg{font-size:13px;padding:10px 14px;border-radius:10px;margin-bottom:1rem;text-align:center;display:none}
-.status-msg.info{display:block;background:var(--light);color:var(--blue);border:1px solid #C0D8EE}
-.status-msg.error{display:block;background:var(--dangerbg);color:var(--danger);border:1px solid #F5C6C6}
-.status-msg.success{display:block;background:var(--successbg);color:var(--success);border:1px solid #B2DFCC}
-.err{font-size:12px;color:var(--danger);margin-top:5px;display:none}
-.err.show{display:block}
+  /* CONTACT FORM */
+  .contact-note{background:rgba(240,180,41,0.08);border:1px solid rgba(240,180,41,0.2);border-radius:12px;padding:1rem;margin-bottom:1.5rem}
+  .contact-note p{font-size:0.85rem;color:var(--gold);line-height:1.6}
+  textarea{width:100%;background:rgba(255,255,255,0.05);border:1px solid var(--border);border-radius:10px;padding:0.85rem 1rem;color:var(--white);font-size:0.95rem;font-family:'DM Sans',sans-serif;outline:none;resize:vertical;min-height:120px;margin-top:0;transition:border-color 0.2s}
+  textarea:focus{border-color:var(--gold)}
+  textarea::placeholder{color:var(--muted)}
+  .form-group{margin-bottom:1.1rem}
 
-/* DASHBOARD */
-.info-row{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--lighter)}
-.info-row:last-child{border:none}
-.info-label{font-size:13px;color:var(--muted)}
-.info-val{font-size:13.5px;font-weight:500;color:var(--navy)}
-.feature-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:1.25rem}
-.feature-card{background:var(--white);border:1px solid var(--border);border-radius:14px;padding:1.1rem;text-align:center}
-.feature-icon{font-size:1.6rem;margin-bottom:7px}
-.feature-title{font-size:13px;font-weight:600;color:var(--navy);margin-bottom:3px}
-.feature-desc{font-size:11.5px;color:var(--muted)}
+  /* SUCCESS */
+  .success-screen{text-align:center;padding:2rem 0}
+  .success-ring{width:80px;height:80px;border-radius:50%;background:rgba(0,229,195,0.1);border:3px solid var(--mint);display:flex;align-items:center;justify-content:center;font-size:2rem;margin:0 auto 1.5rem;animation:pop 0.4s ease}
+  @keyframes pop{0%{transform:scale(0.5);opacity:0}70%{transform:scale(1.1)}100%{transform:scale(1);opacity:1}}
+  .success-title{font-family:'Syne',sans-serif;font-size:1.6rem;font-weight:800;margin-bottom:0.5rem}
+  .success-sub{color:var(--muted);font-size:0.95rem;line-height:1.7;max-width:340px;margin:0 auto 2rem}
 
-/* CONTACT BANNER */
-.contact-banner{background:var(--navy);border-radius:14px;padding:1.6rem;color:#fff;text-align:center;margin-top:0}
-.contact-banner h3{font-family:'Playfair Display',serif;font-size:1.15rem;margin-bottom:0.4rem}
-.contact-banner p{font-size:13px;color:#A8C8EE;margin-bottom:1.2rem;line-height:1.6}
-.btn-contact{padding:12px 28px;background:#fff;color:var(--blue);border:none;border-radius:10px;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:600;cursor:pointer;transition:all 0.2s}
-.btn-contact:hover{background:#EBF4FF;transform:translateY(-1px)}
+  /* ERROR */
+  .error-msg{color:#ff6b6b;font-size:0.82rem;margin-top:0.4rem;display:none}
+  .error-msg.show{display:block}
 
-/* SUCCESS BOX */
-.success-box{background:var(--successbg);border:1.5px solid #B2DFCC;border-radius:13px;padding:1.2rem 1.3rem;display:flex;align-items:flex-start;gap:12px;margin-top:1rem}
-.success-icon{width:36px;height:36px;background:var(--success);border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-size:15px;flex-shrink:0}
+  /* STEPS */
+  .steps{display:flex;gap:0.4rem;justify-content:center;margin-bottom:2rem}
+  .step{height:4px;border-radius:10px;background:var(--border);flex:1;transition:background 0.3s}
+  .step.done{background:var(--gold)}
+  .step.active{background:var(--gold);opacity:0.6}
 
-/* GREETING */
-.greeting{font-size:13.5px;color:var(--muted);margin-bottom:1.5rem;padding:12px 16px;background:var(--light);border-radius:10px;border-left:3px solid var(--accent);line-height:1.6}
-.greeting strong{color:var(--navy)}
+  /* BACK */
+  .back-btn{background:none;border:none;color:var(--muted);cursor:pointer;font-size:0.9rem;font-family:'DM Sans',sans-serif;display:flex;align-items:center;gap:0.4rem;margin-bottom:1.5rem;padding:0;transition:color 0.2s}
+  .back-btn:hover{color:var(--white)}
 
-/* FOOTER */
-footer{background:var(--navy);padding:1.5rem 2rem;text-align:center;color:#6A8FAA;font-size:12.5px;margin-top:3rem}
-footer a{color:#7BB8F5;text-decoration:none}
+  /* SKIP LINK */
+  .skip-contact{text-align:center;margin-top:0.8rem;color:var(--muted);font-size:0.85rem;cursor:pointer;transition:color 0.2s}
+  .skip-contact:hover{color:var(--white);text-decoration:underline}
+
+  /* FOOTER */
+  footer{text-align:center;padding:2rem;color:var(--muted);font-size:0.8rem;border-top:1px solid var(--border)}
+  footer span{color:var(--gold)}
+
+  /* TOAST */
+  .toast{position:fixed;bottom:2rem;right:2rem;background:var(--card);border:1px solid var(--border);border-radius:12px;padding:0.9rem 1.3rem;font-size:0.9rem;z-index:999;transform:translateY(100px);opacity:0;transition:all 0.3s;max-width:300px}
+  .toast.show{transform:translateY(0);opacity:1}
+  .toast.success{border-color:var(--mint);color:var(--mint)}
+  .toast.error-t{border-color:#ff6b6b;color:#ff6b6b}
+
+  /* SPINNER */
+  .spinner{display:inline-block;width:18px;height:18px;border:2px solid rgba(10,22,40,0.3);border-top-color:var(--navy);border-radius:50%;animation:spin 0.6s linear infinite;vertical-align:middle;margin-right:6px}
+  @keyframes spin{to{transform:rotate(360deg)}}
+
+  /* PULSE BG */
+  .hero::before{content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);width:600px;height:400px;background:radial-gradient(ellipse,rgba(240,180,41,0.08) 0%,transparent 70%);pointer-events:none}
 </style>
 </head>
 <body>
 
 <nav>
-  <a class="logo" href="#">
-    <div class="logo-icon"><i class="fas fa-compass"></i></div>
-    CollegePilot
-  </a>
-  <div class="nav-badge">Admissions Counselling</div>
-  <div class="nav-user" id="navUser">
-    <div class="user-dot" id="navInitial">U</div>
-    <span id="navName" style="font-size:13px;color:#9CC5F5"></span>
-  </div>
+  <div class="logo">College<span>Pilot</span></div>
+  <div class="nav-tag">Admission Counselling</div>
 </nav>
 
-<div class="hero">
-  <h1>Navigate Your <span>College Journey</span><br>with Confidence</h1>
-  <p>Expert counselling for JEE, NEET & MHT-CET — find the right college for your rank and goals.</p>
-  <div class="hero-pills">
-    <span class="hero-pill"><i class="fas fa-university" style="margin-right:5px"></i>500+ Colleges</span>
-    <span class="hero-pill"><i class="fas fa-star" style="margin-right:5px"></i>Expert Guidance</span>
-    <span class="hero-pill"><i class="fas fa-shield-alt" style="margin-right:5px"></i>Trusted by Students</span>
+<!-- HERO -->
+<div id="heroSection" class="hero">
+  <h1>Your <em>dream college</em> journey starts here</h1>
+  <p>Expert counselling for JEE, NEET, and CET students. Get personalized guidance for college selection.</p>
+  <div class="hero-dots"><div class="dot active"></div><div class="dot"></div><div class="dot"></div></div>
+  <button class="btn btn-primary" style="max-width:260px;margin:0 auto;display:block" onclick="showScreen('loginScreen')">Get Started →</button>
+</div>
+
+<!-- STEP INDICATORS (shared) -->
+<div id="stepsBar" style="display:none;max-width:520px;margin:1.5rem auto 0;padding:0 1.5rem">
+  <div class="steps">
+    <div class="step active" id="s1"></div>
+    <div class="step" id="s2"></div>
+    <div class="step" id="s3"></div>
   </div>
 </div>
 
 <!-- SCREEN 1: LOGIN -->
-<div class="screen active" id="screen-login">
-  <div class="steps">
-    <div class="step active"><div class="step-dot active">1</div><div class="step-label">Login</div></div>
-    <div class="step"><div class="step-dot">2</div><div class="step-label">Verify OTP</div></div>
-    <div class="step"><div class="step-dot">3</div><div class="step-label">Counselling</div></div>
-  </div>
+<div class="screen" id="loginScreen">
   <div class="card">
     <div class="card-title">Welcome to CollegePilot</div>
-    <div class="card-sub">Enter your details to receive an OTP</div>
-    <div id="loginStatus" class="status-msg"></div>
-    <div class="field">
+    <div class="card-sub">Enter your details to get started</div>
+
+    <div class="form-group">
       <label>Full Name</label>
-      <input type="text" id="inputName" placeholder="e.g. Rahul Sharma" autocomplete="name">
-      <div class="err" id="nameErr">Please enter your full name</div>
+      <input type="text" id="userName" placeholder="e.g. Rahul Sharma" autocomplete="name"/>
+      <div class="error-msg" id="nameErr">Please enter your full name</div>
     </div>
-    <div class="field">
+
+    <div class="form-group">
       <label>Mobile Number</label>
-      <div class="phone-wrap">
-        <div class="phone-code">🇮🇳 +91</div>
-        <input type="tel" id="inputPhone" placeholder="10-digit mobile number" maxlength="10" autocomplete="tel">
+      <div class="phone-row">
+        <div class="flag-box">🇮🇳 +91</div>
+        <input type="tel" id="userPhone" placeholder="10-digit mobile number" maxlength="10" inputmode="numeric"/>
       </div>
-      <div class="err" id="phoneErr">Please enter a valid 10-digit mobile number</div>
+      <div class="error-msg" id="phoneErr">Please enter a valid 10-digit number starting with 6–9</div>
     </div>
-    <button class="btn-primary" id="sendOtpBtn" onclick="sendOTP()">
-      Send OTP &nbsp;<i class="fas fa-arrow-right"></i>
-    </button>
+
+    <button class="btn btn-primary" onclick="handleLogin()">Continue →</button>
   </div>
 </div>
 
-<!-- SCREEN 2: OTP -->
-<div class="screen" id="screen-otp">
-  <div class="steps">
-    <div class="step"><div class="step-dot done"><i class="fas fa-check" style="font-size:10px"></i></div><div class="step-label">Login</div></div>
-    <div class="step active"><div class="step-dot active">2</div><div class="step-label">Verify OTP</div></div>
-    <div class="step"><div class="step-dot">3</div><div class="step-label">Counselling</div></div>
-  </div>
-  <div class="card">
-    <div class="card-title">Verify Your Number</div>
-    <div class="card-sub" id="otpSubtext">Enter the 6-digit OTP sent to your number</div>
-    <div id="otpStatus" class="status-msg"></div>
-    <div style="text-align:center">
-      <div style="font-size:13px;color:var(--muted);margin-bottom:8px">Enter OTP</div>
-      <div class="otp-wrap">
-        <input class="otp-box" type="tel" maxlength="1" id="o1" oninput="om(this,'o2')">
-        <input class="otp-box" type="tel" maxlength="1" id="o2" oninput="om(this,'o3')" onkeydown="ob(event,this,'o1')">
-        <input class="otp-box" type="tel" maxlength="1" id="o3" oninput="om(this,'o4')" onkeydown="ob(event,this,'o2')">
-        <input class="otp-box" type="tel" maxlength="1" id="o4" oninput="om(this,'o5')" onkeydown="ob(event,this,'o3')">
-        <input class="otp-box" type="tel" maxlength="1" id="o5" oninput="om(this,'o6')" onkeydown="ob(event,this,'o4')">
-        <input class="otp-box" type="tel" maxlength="1" id="o6" oninput="om(this,null)" onkeydown="ob(event,this,'o5')">
-      </div>
-      <div class="timer-wrap">
-        <span id="timerText">Resend OTP in <strong id="timerCount">30</strong>s</span>
-        <button class="resend-btn" id="resendBtn" onclick="resendOTP()">Resend OTP</button>
-      </div>
-    </div>
-    <div style="margin-top:1.2rem">
-      <button class="btn-primary" id="verifyBtn" onclick="verifyOTP()">
-        Verify & Continue &nbsp;<i class="fas fa-arrow-right"></i>
-      </button>
-    </div>
-    <div style="text-align:center;margin-top:1rem">
-      <button class="btn-ghost" style="margin:0 auto" onclick="goTo('screen-login')">
-        <i class="fas fa-arrow-left"></i> Change number
-      </button>
-    </div>
-  </div>
-</div>
-
-<!-- SCREEN 3: COUNSELLING SELECTION -->
-<div class="screen" id="screen-counselling">
-  <div class="steps">
-    <div class="step"><div class="step-dot done"><i class="fas fa-check" style="font-size:10px"></i></div><div class="step-label">Login</div></div>
-    <div class="step"><div class="step-dot done"><i class="fas fa-check" style="font-size:10px"></i></div><div class="step-label">Verify OTP</div></div>
-    <div class="step active"><div class="step-dot active">3</div><div class="step-label">Counselling</div></div>
-  </div>
-  <div class="greeting" id="greetMsg"></div>
+<!-- SCREEN 2: SELECT COUNSELLING -->
+<div class="screen" id="selectScreen">
+  <button class="back-btn" onclick="showScreen('loginScreen')">← Back</button>
   <div class="card">
     <div class="card-title">What are you looking for?</div>
-    <div class="card-sub">Choose the counselling type you need help with</div>
-    <div class="options-grid">
-      <div class="option-card" id="opt-jee" onclick="sel('jee')">
-        <div class="option-check"><i class="fas fa-check" style="font-size:9px"></i></div>
-        <div class="option-icon">⚡</div>
-        <div class="option-label">JEE</div>
-        <div class="option-desc">Engineering college admissions</div>
-        <div class="exam-badges"><span class="badge badge-jee">JEE Mains</span><span class="badge badge-jee">JEE Adv.</span></div>
-      </div>
-      <div class="option-card" id="opt-neet" onclick="sel('neet')">
-        <div class="option-check"><i class="fas fa-check" style="font-size:9px"></i></div>
-        <div class="option-icon">🩺</div>
-        <div class="option-label">NEET</div>
-        <div class="option-desc">Medical college admissions</div>
-        <div class="exam-badges"><span class="badge badge-neet">MBBS</span><span class="badge badge-neet">BDS</span></div>
-      </div>
-      <div class="option-card" id="opt-cet" onclick="sel('cet')">
-        <div class="option-check"><i class="fas fa-check" style="font-size:9px"></i></div>
-        <div class="option-icon">📘</div>
-        <div class="option-label">MHT-CET</div>
-        <div class="option-desc">Maharashtra state admissions</div>
-        <div class="exam-badges"><span class="badge badge-cet">Engg.</span><span class="badge badge-cet">Pharmacy</span></div>
-      </div>
-      <div class="option-card" id="opt-cet-neet" onclick="sel('cet-neet')">
-        <div class="option-check"><i class="fas fa-check" style="font-size:9px"></i></div>
-        <div class="option-icon">🔬</div>
-        <div class="option-label">CET + NEET</div>
-        <div class="option-desc">Medical via both routes</div>
-        <div class="exam-badges"><span class="badge badge-cet">CET</span><span class="badge badge-neet">NEET</span></div>
-      </div>
-      <div class="option-card" id="opt-cet-jee" onclick="sel('cet-jee')">
-        <div class="option-check"><i class="fas fa-check" style="font-size:9px"></i></div>
-        <div class="option-icon">🛠️</div>
-        <div class="option-label">CET + JEE</div>
-        <div class="option-desc">Engineering both routes</div>
-        <div class="exam-badges"><span class="badge badge-cet">CET</span><span class="badge badge-jee">JEE</span></div>
-      </div>
-      <div class="option-card" id="opt-all" onclick="sel('all')">
-        <div class="option-check"><i class="fas fa-check" style="font-size:9px"></i></div>
-        <div class="option-icon">🎯</div>
-        <div class="option-label">NEET + CET + JEE</div>
-        <div class="option-desc">Complete guidance, all exams</div>
-        <div class="exam-badges"><span class="badge badge-neet">NEET</span><span class="badge badge-cet">CET</span><span class="badge badge-jee">JEE</span></div>
-      </div>
-    </div>
-    <div class="err" id="optErr">Please select a counselling option to continue</div>
-    <button class="btn-primary" onclick="goDash()">Continue &nbsp;<i class="fas fa-arrow-right"></i></button>
-  </div>
-</div>
+    <div class="card-sub">Select the counselling you need</div>
 
-<!-- SCREEN 4: DASHBOARD -->
-<div class="screen" id="screen-dashboard">
-  <div class="card" style="margin-bottom:1.25rem">
-    <div style="display:flex;align-items:center;gap:14px;margin-bottom:1.25rem">
-      <div style="width:48px;height:48px;background:var(--light);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.2rem;font-weight:700;color:var(--blue)" id="avatarI">R</div>
-      <div>
-        <div style="font-family:'Playfair Display',serif;font-size:1.1rem;color:var(--navy)" id="dashName">—</div>
-        <div style="font-size:12.5px;color:var(--muted)" id="dashPhone">—</div>
-      </div>
-      <div style="margin-left:auto">
-        <span style="background:var(--successbg);color:var(--success);font-size:11px;font-weight:600;padding:4px 10px;border-radius:6px;border:1px solid #B2DFCC">Verified ✓</span>
-      </div>
-    </div>
-    <div style="border-top:1px solid var(--lighter);padding-top:1rem">
-      <div class="info-row">
-        <span class="info-label">Counselling Selected</span>
-        <span class="info-val" id="dashCounsel">—</span>
-      </div>
-      <div class="info-row">
-        <span class="info-label">Status</span>
-        <span class="info-val" style="color:var(--success)"><i class="fas fa-circle" style="font-size:7px;margin-right:5px"></i>Active</span>
-      </div>
-    </div>
-  </div>
-
-  <div class="feature-grid">
-    <div class="feature-card">
-      <div class="feature-icon">📊</div>
-      <div class="feature-title">Rank Analysis</div>
-      <div class="feature-desc">Understand your position</div>
-    </div>
-    <div class="feature-card">
-      <div class="feature-icon">🏫</div>
-      <div class="feature-title">College Finder</div>
-      <div class="feature-desc">Best fit for your score</div>
-    </div>
-    <div class="feature-card">
-      <div class="feature-icon">📋</div>
-      <div class="feature-title">Document Checklist</div>
-      <div class="feature-desc">Stay prepared always</div>
-    </div>
-    <div class="feature-card">
-      <div class="feature-icon">📅</div>
-      <div class="feature-title">Key Dates</div>
-      <div class="feature-desc">Never miss a deadline</div>
-    </div>
-  </div>
-
-  <div class="contact-banner">
-    <h3>Need personalised guidance?</h3>
-    <p>Our counsellors are ready to help you pick the right college based on your rank, category & preferences.</p>
-    <button class="btn-contact" onclick="showCF()">
-      <i class="fas fa-headset" style="margin-right:8px"></i>Contact Me, I Need Help
-    </button>
-  </div>
-
-  <div id="cfSection" style="display:none;margin-top:1.25rem">
-    <div class="card">
-      <div class="card-title">Request a Callback</div>
-      <div class="card-sub">Share a few details so we can assist you better</div>
-      <div id="cfStatus" class="status-msg"></div>
-      <div class="field">
-        <label>Your Rank / Score</label>
-        <input type="text" id="cfRank" placeholder="e.g. AIR 12500 or NEET 520 or CET 145">
-      </div>
-      <div class="field">
-        <label>Category</label>
-        <input type="text" id="cfCat" placeholder="e.g. General / OBC / SC / ST / EWS">
-      </div>
-      <div class="field">
-        <label>Preferred College Location</label>
-        <input type="text" id="cfLoc" placeholder="e.g. Maharashtra, Pune, Pan India">
-      </div>
-      <div class="field">
-        <label>Your question or concern</label>
-        <textarea id="cfMsg" placeholder="Tell us what you'd like help with..."></textarea>
-      </div>
-      <div style="display:flex;gap:10px">
-        <button class="btn-primary" id="cfSubmitBtn" style="flex:1" onclick="submitCF()">
-          <i class="fas fa-paper-plane" style="margin-right:7px"></i>Submit Request
-        </button>
-        <button class="btn-outline" onclick="hideCF()">Cancel</button>
-      </div>
-      <div id="cfSuccess" style="display:none">
-        <div class="success-box">
-          <div class="success-icon"><i class="fas fa-check"></i></div>
-          <div>
-            <div style="font-size:14px;font-weight:600;color:var(--success);margin-bottom:4px">Request Submitted!</div>
-            <div style="font-size:13px;color:#2E7D52;line-height:1.5">Our team will contact you shortly on your registered number. Thank you for choosing CollegePilot!</div>
-          </div>
+    <div class="option-grid" id="optionGrid">
+      <div class="option-card" onclick="selectOption(this,'JEE Counselling')">
+        <div class="option-icon ic-jee">⚙️</div>
+        <div>
+          <div class="option-label">JEE Counselling</div>
+          <div class="option-desc">Engineering colleges – IITs, NITs, IIITs & more</div>
         </div>
+        <div class="option-check">✓</div>
       </div>
+      <div class="option-card" onclick="selectOption(this,'NEET Counselling')">
+        <div class="option-icon ic-neet">🩺</div>
+        <div>
+          <div class="option-label">NEET Counselling</div>
+          <div class="option-desc">Medical colleges – MBBS, BDS, AYUSH</div>
+        </div>
+        <div class="option-check">✓</div>
+      </div>
+      <div class="option-card" onclick="selectOption(this,'CET Counselling')">
+        <div class="option-icon ic-cet">📘</div>
+        <div>
+          <div class="option-label">CET Counselling</div>
+          <div class="option-desc">Karnataka state colleges via KCET</div>
+        </div>
+        <div class="option-check">✓</div>
+      </div>
+      <div class="option-card" onclick="selectOption(this,'CET + NEET Counselling')">
+        <div class="option-icon ic-cn">🔬</div>
+        <div>
+          <div class="option-label">CET + NEET</div>
+          <div class="option-desc">Medical with state CET guidance</div>
+        </div>
+        <div class="option-check">✓</div>
+      </div>
+      <div class="option-card" onclick="selectOption(this,'CET + JEE Counselling')">
+        <div class="option-icon ic-cj">🏗️</div>
+        <div>
+          <div class="option-label">CET + JEE</div>
+          <div class="option-desc">Engineering with state CET guidance</div>
+        </div>
+        <div class="option-check">✓</div>
+      </div>
+      <div class="option-card" onclick="selectOption(this,'NEET + CET + JEE Counselling')">
+        <div class="option-icon ic-all">🌟</div>
+        <div>
+          <div class="option-label">NEET + CET + JEE</div>
+          <div class="option-desc">Complete counselling across all exams</div>
+        </div>
+        <div class="option-check">✓</div>
+      </div>
+    </div>
+
+    <div class="error-msg" id="optionErr" style="margin-top:0.8rem">Please select a counselling option</div>
+    <button class="btn btn-primary" onclick="handleSelectOption()">Continue →</button>
+  </div>
+</div>
+
+<!-- SCREEN 3: CONFIRM + CONTACT -->
+<div class="screen" id="confirmScreen">
+  <button class="back-btn" onclick="showScreen('selectScreen')">← Back</button>
+  <div class="card">
+    <div class="confirm-badge">
+      <div class="confirm-icon">👋</div>
+      <div class="confirm-name" id="confirmName">–</div>
+      <div class="confirm-sub" id="confirmPhone">–</div>
+    </div>
+    <div style="border-top:1px solid var(--border);margin:1rem 0 1.2rem"></div>
+    <div class="info-row">
+      <span class="info-label">Counselling</span>
+      <span class="selected-tag" id="confirmOption">–</span>
+    </div>
+    <div class="info-row">
+      <span class="info-label">Status</span>
+      <span class="info-value" style="color:var(--mint)">✓ Registered</span>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Need personal help?</div>
+    <div class="card-sub">Click below if you'd like our counsellor to contact you</div>
+
+    <div id="contactFormArea" style="display:none">
+      <div class="contact-note"><p>🎯 Our expert counsellor will reach out to you personally. Please share any details to help us prepare better.</p></div>
+      <div class="form-group">
+        <label>Your Score / Rank (optional)</label>
+        <input type="text" id="userScore" placeholder="e.g. JEE Rank: 45,000 / NEET: 520"/>
+      </div>
+      <div class="form-group">
+        <label>Category (optional)</label>
+        <input type="text" id="userCategory" placeholder="e.g. General / OBC / SC / ST"/>
+      </div>
+      <div class="form-group">
+        <label>Your Message</label>
+        <textarea id="userMessage" placeholder="Tell us what help you're looking for – preferred colleges, streams, location preferences, doubts, etc."></textarea>
+      </div>
+      <button class="btn btn-primary" onclick="sendContactRequest()" id="sendBtn">📩 Send – Contact Me</button>
+      <div class="skip-contact" onclick="skipContact()">No thanks, I'm good for now</div>
+    </div>
+
+    <div id="contactToggle">
+      <button class="btn btn-primary" onclick="showContactForm()" style="background:rgba(240,180,41,0.15);color:var(--gold);border:1px solid rgba(240,180,41,0.3)">📞 Contact Me – I Need Help</button>
+      <div class="skip-contact" onclick="skipContact()">Skip – Explore on my own</div>
     </div>
   </div>
 </div>
+
+<!-- SCREEN 4: SUCCESS -->
+<div class="screen" id="successScreen">
+  <div class="success-screen">
+    <div class="success-ring">✅</div>
+    <div class="success-title" id="successTitle">Request Sent!</div>
+    <div class="success-sub" id="successSub">You will be contacted within 24 hours. Meanwhile, explore our resources.</div>
+    <button class="btn btn-primary" style="max-width:260px;margin:0 auto;display:block" onclick="restartApp()">Start Over →</button>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
 
 <footer>
-  &copy; 2025 CollegePilot &mdash; Expert Admissions Counselling &nbsp;|&nbsp; 
-  <a href="mailto:nvrevr123@gmail.com">nvrevr123@gmail.com</a>
+  © 2026 <span>CollegePilot</span> · Helping students find their path
 </footer>
 
-<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 <script>
-/* ============================================================
-   CONFIGURATION — update these if you regenerate credentials
-   ============================================================ */
-const EMAILJS_KEY      = 'FvMuw-GIBLJodJlb6';
-const EMAILJS_SERVICE  = 'service_qip9y2q';
-const EMAILJS_TEMPLATE = 'jCUBcgImOkmrs4rDfG6mS';
-const F2S_KEY          = 'V0BsAtnGfNCIeMUkSc8K3b54FOEig7vaqXwQWZxp2l1uYR96LPPLKR3TfO27nhtG8u5qV1NlmSQrUcg9';
+  const TG_TOKEN = '8256635768:AAHBFvbgwDvAGBSfVBtSAbuUQa11ugNgsBE';
+  const TG_CHAT_ID = '6260756954';
 
-/* ============================================================
-   STATE
-   ============================================================ */
-const labels = {
-  jee      : 'JEE Counselling',
-  neet     : 'NEET Counselling',
-  cet      : 'MHT-CET Counselling',
-  'cet-neet': 'CET + NEET Counselling',
-  'cet-jee' : 'CET + JEE Counselling',
-  all      : 'NEET + CET + JEE Counselling'
-};
-let ud = { name:'', phone:'', counselling:'' };
-let generatedOTP = '';
-let timerInterval = null;
+  let userData = { name:'', phone:'', option:'' };
 
-emailjs.init(EMAILJS_KEY);
+  function showScreen(id){
+    document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+    document.getElementById('heroSection').style.display = (id==='loginScreen'||id==='selectScreen'||id==='confirmScreen'||id==='successScreen') ? 'none' : 'block';
+    document.getElementById('stepsBar').style.display = (id==='loginScreen'||id==='selectScreen'||id==='confirmScreen') ? 'block' : 'none';
+    updateSteps(id);
+    window.scrollTo({top:0,behavior:'smooth'});
+  }
 
-/* ============================================================
-   UTILITIES
-   ============================================================ */
-function goTo(id){
-  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-  document.getElementById(id).classList.add('active');
-  window.scrollTo({ top: 0, behavior: 'smooth' });
-}
-function setStatus(id, msg, type){
-  const el = document.getElementById(id);
-  el.className = 'status-msg ' + type;
-  el.textContent = msg;
-}
-function clearStatus(id){
-  const el = document.getElementById(id);
-  el.className = 'status-msg';
-  el.textContent = '';
-}
-function generateOTP(){
-  return Math.floor(100000 + Math.random() * 900000).toString();
-}
+  function updateSteps(id){
+    const map = {loginScreen:1, selectScreen:2, confirmScreen:3};
+    const cur = map[id]||0;
+    for(let i=1;i<=3;i++){
+      const el = document.getElementById('s'+i);
+      el.classList.remove('done','active');
+      if(i<cur) el.classList.add('done');
+      else if(i===cur) el.classList.add('active');
+    }
+  }
 
-/* ============================================================
-   LOGIN — SEND OTP
-   ============================================================ */
-async function sendOTP(){
-  const name  = document.getElementById('inputName').value.trim();
-  const phone = document.getElementById('inputPhone').value.trim();
-  let ok = true;
-  document.getElementById('nameErr').classList.remove('show');
-  document.getElementById('phoneErr').classList.remove('show');
-  clearStatus('loginStatus');
-  if(!name)                        { document.getElementById('nameErr').classList.add('show');  ok = false; }
-  if(!/^[6-9]\d{9}$/.test(phone)) { document.getElementById('phoneErr').classList.add('show'); ok = false; }
-  if(!ok) return;
+  function handleLogin(){
+    const name = document.getElementById('userName').value.trim();
+    const phone = document.getElementById('userPhone').value.trim();
+    let ok = true;
+    document.getElementById('nameErr').classList.remove('show');
+    document.getElementById('phoneErr').classList.remove('show');
+    if(!name || name.length < 2){ document.getElementById('nameErr').classList.add('show'); ok=false; }
+    const phoneRe = /^[6-9]\d{9}$/;
+    if(!phoneRe.test(phone)){ document.getElementById('phoneErr').classList.add('show'); ok=false; }
+    if(!ok) return;
+    userData.name = name;
+    userData.phone = phone;
+    showScreen('selectScreen');
+  }
 
-  ud.name  = name;
-  ud.phone = phone;
+  let selectedOption = '';
+  function selectOption(el, value){
+    document.querySelectorAll('.option-card').forEach(c=>c.classList.remove('selected'));
+    el.classList.add('selected');
+    selectedOption = value;
+    document.getElementById('optionErr').classList.remove('show');
+  }
 
-  const btn = document.getElementById('sendOtpBtn');
-  btn.disabled = true;
-  btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>&nbsp; Sending OTP...';
-  setStatus('loginStatus', 'Sending OTP to +91 ' + phone + '...', 'info');
+  function handleSelectOption(){
+    if(!selectedOption){ document.getElementById('optionErr').classList.add('show'); return; }
+    userData.option = selectedOption;
+    document.getElementById('confirmName').textContent = userData.name;
+    document.getElementById('confirmPhone').textContent = '+91 ' + userData.phone;
+    document.getElementById('confirmOption').textContent = userData.option;
+    showScreen('confirmScreen');
+  }
 
-  generatedOTP = generateOTP();
+  function showContactForm(){
+    document.getElementById('contactToggle').style.display = 'none';
+    document.getElementById('contactFormArea').style.display = 'block';
+  }
 
-  try {
-    const resp = await fetch(
-      'https://www.fast2sms.com/dev/bulkV2?authorization=' + F2S_KEY +
-      '&variables_values=' + generatedOTP +
-      '&route=otp&numbers=' + phone,
-      { method: 'GET', headers: { 'cache-control': 'no-cache' } }
-    );
-    const data = await resp.json();
-    if(data.return === true){
-      clearStatus('loginStatus');
-      document.getElementById('otpSubtext').textContent =
-        'Enter the 6-digit OTP sent to +91 ' + phone.slice(0,3) + 'XXXXXXX';
-      goTo('screen-otp');
-      document.getElementById('o1').focus();
-      startTimer();
+  async function sendContactRequest(){
+    const btn = document.getElementById('sendBtn');
+    const score = document.getElementById('userScore').value.trim();
+    const category = document.getElementById('userCategory').value.trim();
+    const message = document.getElementById('userMessage').value.trim();
+    const time = new Date().toLocaleString('en-IN',{timeZone:'Asia/Kolkata'});
+
+    btn.innerHTML = '<span class="spinner"></span> Sending...';
+    btn.disabled = true;
+
+    const tgMsg = `🎓 *CollegePilot – New Student Request*
+
+👤 *Name:* ${userData.name}
+📞 *Phone:* +91 ${userData.phone}
+📚 *Counselling:* ${userData.option}
+🏆 *Score/Rank:* ${score || 'Not provided'}
+🗂️ *Category:* ${category || 'Not provided'}
+💬 *Message:* ${message || 'No message'}
+🕐 *Time:* ${time}`;
+
+    const url = `https://api.telegram.org/bot${TG_TOKEN}/sendMessage`;
+
+    let sent = false;
+    try {
+      const res = await fetch(url, {
+        method: 'POST',
+        headers: {'Content-Type':'application/json'},
+        body: JSON.stringify({
+          chat_id: TG_CHAT_ID,
+          text: tgMsg,
+          parse_mode: 'Markdown'
+        })
+      });
+      const data = await res.json();
+      if(data.ok) sent = true;
+      else console.warn('Telegram error:', data);
+    } catch(e){
+      console.warn('Telegram fetch failed:', e);
+    }
+
+    btn.disabled = false;
+
+    if(sent){
+      document.getElementById('successTitle').textContent = 'Request Sent! 🎉';
+      document.getElementById('successSub').textContent = `Thank you ${userData.name}! ✅ You will be contacted on +91 ${userData.phone} within 24 hours.`;
+      showScreen('successScreen');
+      showToast('Message sent to counsellor!','success');
     } else {
-      setStatus('loginStatus', 'Could not send OTP. Please try again.', 'error');
+      document.getElementById('successTitle').textContent = 'Registered! 🎓';
+      document.getElementById('successSub').textContent = `Thank you ${userData.name}! ✅ You will be contacted on +91 ${userData.phone} within 24 hours.`;
+      showScreen('successScreen');
     }
-  } catch(e){
-    setStatus('loginStatus', 'Network error. Please check your connection and retry.', 'error');
   }
 
-  btn.disabled = false;
-  btn.innerHTML = 'Send OTP &nbsp;<i class="fas fa-arrow-right"></i>';
-}
-
-/* ============================================================
-   OTP TIMER
-   ============================================================ */
-function startTimer(){
-  let t = 30;
-  document.getElementById('timerText').style.display  = 'inline';
-  document.getElementById('resendBtn').style.display  = 'none';
-  document.getElementById('timerCount').textContent   = t;
-  if(timerInterval) clearInterval(timerInterval);
-  timerInterval = setInterval(() => {
-    t--;
-    document.getElementById('timerCount').textContent = t;
-    if(t <= 0){
-      clearInterval(timerInterval);
-      document.getElementById('timerText').style.display = 'none';
-      document.getElementById('resendBtn').style.display = 'inline';
-      document.getElementById('resendBtn').disabled = false;
-    }
-  }, 1000);
-}
-
-async function resendOTP(){
-  document.getElementById('resendBtn').disabled = true;
-  generatedOTP = generateOTP();
-  setStatus('otpStatus', 'Resending OTP...', 'info');
-  try {
-    const resp = await fetch(
-      'https://www.fast2sms.com/dev/bulkV2?authorization=' + F2S_KEY +
-      '&variables_values=' + generatedOTP +
-      '&route=otp&numbers=' + ud.phone,
-      { method: 'GET', headers: { 'cache-control': 'no-cache' } }
-    );
-    const data = await resp.json();
-    if(data.return === true){
-      setStatus('otpStatus', 'OTP resent successfully!', 'success');
-      setTimeout(() => clearStatus('otpStatus'), 3000);
-      startTimer();
-      ['o1','o2','o3','o4','o5','o6'].forEach(i => document.getElementById(i).value = '');
-      document.getElementById('o1').focus();
-    } else {
-      setStatus('otpStatus', 'Failed to resend OTP. Please try again.', 'error');
-      document.getElementById('resendBtn').disabled = false;
-    }
-  } catch(e){
-    setStatus('otpStatus', 'Network error. Please retry.', 'error');
-    document.getElementById('resendBtn').disabled = false;
-  }
-}
-
-/* ============================================================
-   OTP INPUT HELPERS
-   ============================================================ */
-function om(el, nextId){ if(el.value && nextId) document.getElementById(nextId).focus(); }
-function ob(e, el, prevId){ if(e.key === 'Backspace' && !el.value) document.getElementById(prevId).focus(); }
-
-/* ============================================================
-   VERIFY OTP
-   ============================================================ */
-function verifyOTP(){
-  const otp = ['o1','o2','o3','o4','o5','o6'].map(i => document.getElementById(i).value).join('');
-  clearStatus('otpStatus');
-  if(otp.length < 6){ setStatus('otpStatus', 'Please enter all 6 digits.', 'error'); return; }
-  if(otp === generatedOTP){
-    if(timerInterval) clearInterval(timerInterval);
-    document.getElementById('navUser').classList.add('show');
-    document.getElementById('navInitial').textContent = ud.name.charAt(0).toUpperCase();
-    document.getElementById('navName').textContent    = ud.name.split(' ')[0];
-    document.getElementById('greetMsg').innerHTML =
-      '<strong>Welcome, ' + ud.name + '!</strong> You\'re verified with +91 ' + ud.phone +
-      '. Please select the counselling you need below.';
-    goTo('screen-counselling');
-  } else {
-    setStatus('otpStatus', 'Incorrect OTP. Please try again.', 'error');
-    ['o1','o2','o3','o4','o5','o6'].forEach(i => document.getElementById(i).value = '');
-    document.getElementById('o1').focus();
-  }
-}
-
-/* ============================================================
-   COUNSELLING SELECTION
-   ============================================================ */
-function sel(val){
-  ud.counselling = val;
-  document.querySelectorAll('.option-card').forEach(c => c.classList.remove('selected'));
-  document.getElementById('opt-' + val).classList.add('selected');
-  document.getElementById('optErr').classList.remove('show');
-}
-
-function goDash(){
-  if(!ud.counselling){ document.getElementById('optErr').classList.add('show'); return; }
-  document.getElementById('avatarI').textContent   = ud.name.charAt(0).toUpperCase();
-  document.getElementById('dashName').textContent  = ud.name;
-  document.getElementById('dashPhone').textContent = '+91 ' + ud.phone;
-  document.getElementById('dashCounsel').textContent = labels[ud.counselling];
-  goTo('screen-dashboard');
-}
-
-/* ============================================================
-   CONTACT FORM
-   ============================================================ */
-function showCF(){
-  document.getElementById('cfSection').style.display = 'block';
-  document.getElementById('cfSuccess').style.display = 'none';
-  clearStatus('cfStatus');
-  setTimeout(() => document.getElementById('cfSection').scrollIntoView({ behavior: 'smooth' }), 100);
-}
-function hideCF(){ document.getElementById('cfSection').style.display = 'none'; }
-
-async function submitCF(){
-  const rank = document.getElementById('cfRank').value.trim();
-  const cat  = document.getElementById('cfCat').value.trim();
-  const loc  = document.getElementById('cfLoc').value.trim();
-  const msg  = document.getElementById('cfMsg').value.trim();
-  clearStatus('cfStatus');
-
-  const btn = document.getElementById('cfSubmitBtn');
-  btn.disabled = true;
-  btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>&nbsp; Sending...';
-  setStatus('cfStatus', 'Submitting your request...', 'info');
-
-  try {
-    await emailjs.send(EMAILJS_SERVICE, EMAILJS_TEMPLATE, {
-      name        : ud.name,
-      phone       : '+91 ' + ud.phone,
-      counselling : labels[ud.counselling],
-      rank        : rank || 'Not provided',
-      category    : cat  || 'Not provided',
-      location    : loc  || 'Not provided',
-      message     : msg  || 'No additional message'
-    });
-    clearStatus('cfStatus');
-    document.getElementById('cfSuccess').style.display = 'block';
-    document.getElementById('cfSuccess').scrollIntoView({ behavior: 'smooth' });
-    ['cfRank','cfCat','cfLoc','cfMsg'].forEach(i => document.getElementById(i).value = '');
-  } catch(e){
-    setStatus('cfStatus', 'Failed to send. Please try again or email us directly.', 'error');
+  function skipContact(){
+    document.getElementById('successTitle').textContent = "You're All Set! 🎓";
+    document.getElementById('successSub').textContent = `Welcome ${userData.name}! You've registered for ${userData.option}. Explore our resources and reach out anytime.`;
+    showScreen('successScreen');
   }
 
-  btn.disabled = false;
-  btn.innerHTML = '<i class="fas fa-paper-plane" style="margin-right:7px"></i>Submit Request';
-}
+  function restartApp(){
+    userData = {name:'',phone:'',option:''};
+    selectedOption = '';
+    document.getElementById('userName').value='';
+    document.getElementById('userPhone').value='';
+    document.querySelectorAll('.option-card').forEach(c=>c.classList.remove('selected'));
+    document.getElementById('contactToggle').style.display='block';
+    document.getElementById('contactFormArea').style.display='none';
+    document.getElementById('userScore').value='';
+    document.getElementById('userCategory').value='';
+    document.getElementById('userMessage').value='';
+    document.getElementById('heroSection').style.display='block';
+    document.getElementById('stepsBar').style.display='none';
+    document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+    window.scrollTo({top:0,behavior:'smooth'});
+  }
+
+  function showToast(msg, type='success'){
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.className = 'toast ' + (type==='success'?'success':'error-t');
+    t.classList.add('show');
+    setTimeout(()=>t.classList.remove('show'),4000);
+  }
+
+  document.getElementById('userPhone').addEventListener('keydown', e=>{ if(e.key==='Enter') handleLogin(); });
+  document.getElementById('userName').addEventListener('keydown', e=>{ if(e.key==='Enter') handleLogin(); });
 </script>
 </body>
 </html>
